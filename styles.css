@@ -26,8 +26,27 @@ html {
     word-break: break-all;
     border-color: black;
     border: 2px;
+    height: auto;
 }
 
+.previous_operation {
+    font-size: 15px;
+    height: 15px;
+    margin-bottom: 5px;
+}
+
+.current_screen {
+    height: 20px;
+    font-size: 20px;
+}
+
+#clear {
+    background-color: lightcoral;
+}
+
+#delete {
+    font-size: 30px;
+}
 
 button {
     cursor: pointer;
@@ -39,3 +58,11 @@ button {
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
 }
+
+.arrow-right {
+    width: 0; 
+    height: 0; 
+    border-top: 60px solid transparent;
+    border-bottom: 60px solid transparent;
+    border-left: 60px solid green;
+  }
