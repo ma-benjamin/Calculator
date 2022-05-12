@@ -3,6 +3,7 @@ let first_number = '';
 let second_number = '';
 let current_operator = null;
 let reset = false;
+let containsDecimal = false;
 
 
 const operators = document.querySelectorAll("button.operator")
@@ -29,6 +30,7 @@ function removeLast() {
 }
 
 function operation(b) {
+    if(current_operator === null) return
     second_number = b
     var answer = operate(current_operator, first_number, second_number)
     previous_operation.textContent = previous_operation.textContent + second_number + ' ='
@@ -40,20 +42,33 @@ function operation(b) {
 
 function store_first(op) {
     first_number = current_operation.textContent
-    current_operator = op.trim()
-    previous_operation.textContent = first_number + op
-    reset = true
+    if(op.trim() === "xy") {
+        current_operator = "exponent"
+        previous_operation.textContent = first_number + "^"
+        reset = true
+    } else {
+        current_operator = op.trim()
+        previous_operation.textContent = first_number + op
+        reset = true
+    }
+    containsDecimal = false
 }
 
 function addNumber(a) {
-    if(current_operation.textContent === '0' || reset)
+    if(containsDecimal && a.trim() === ".") return
+    if(a.trim() === "." && current_operation.textContent === '') {
+        current_operation.textContent = "0."
+        containsDecimal = true
+    } else if(current_operation.textContent === '0' || reset) 
         resetDisplay()
+    if(a.trim() === ".") containsDecimal = true
     current_operation.textContent = current_operation.textContent+a.trim()
 }
 
 function resetDisplay() {
     current_display.textContent = ''
     reset = false
+    containsDecimal = false
 }
 
 
@@ -65,19 +80,13 @@ function operate(op, a, b) {
         return add(a, b)
     } else if(op === "-") {
         return subtract(a, b)
-    } else if(op === "×") { // times
+    } else if(op === "×") {
         return multiply(a, b)
     } else if(op === "÷") {
         if(b == 0) {
             return null
         } else {
             return divide(a, b)
-        }
-    } else if (op === "factorial") {
-        if(a < 0) {
-            return null
-        } else {
-            return factorial(a)
         }
     } else if (op === "exponent") {
         return exponent(a, b)
@@ -114,7 +123,7 @@ function factorial(x) {
 function exponent(a,b) {
     var product = 1
     for(var i = 0; i < b; i++) {
-        product * a
+        product *= a
     }
     return product
 }
